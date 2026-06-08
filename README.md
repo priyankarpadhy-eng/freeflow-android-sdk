@@ -30,13 +30,15 @@ This SDK uses Kotlin Coroutines for fast, non-blocking network requests.
 
 ### 1. Initialize the SDK
 Initialize FreeFlow with your Project ID and API Key from the FreeFlow Desktop App.
+To secure your app, set up an 'Allowed Android Package Name' in the Desktop App and pass it here.
 
 ```kotlin
 import com.freeflow.sdk.FreeFlow
 
 val auth = FreeFlow(
     projectId = "YOUR_PROJECT_ID",
-    apiKey = "YOUR_API_KEY"
+    apiKey = "YOUR_API_KEY",
+    packageName = "com.your.app" // Secure your API key
 )
 ```
 

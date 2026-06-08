@@ -11,7 +11,8 @@ import okhttp3.RequestBody.Companion.toRequestBody
 class FreeFlow(
     private val projectId: String,
     private val apiKey: String,
-    private val host: String = "https://freeflow-gateway.vercel.app"
+    private val host: String = "https://freeflow-gateway.vercel.app",
+    private val packageName: String? = null
 ) {
 
     private val client = OkHttpClient()
@@ -37,11 +38,16 @@ class FreeFlow(
         val jsonBody = gson.toJson(mapOf("phone" to phone))
         val body = jsonBody.toRequestBody(JSON)
 
-        val request = Request.Builder()
+        val requestBuilder = Request.Builder()
             .url(url)
             .post(body)
             .addHeader("Authorization", "Bearer $apiKey")
-            .build()
+
+        if (packageName != null) {
+            requestBuilder.addHeader("X-Android-Package", packageName)
+        }
+
+        val request = requestBuilder.build()
 
         client.newCall(request).execute().use { response ->
             val responseBody = response.body?.string() ?: "{}"
@@ -60,11 +66,16 @@ class FreeFlow(
         val jsonBody = gson.toJson(mapOf("phone" to phone, "otp" to otp))
         val body = jsonBody.toRequestBody(JSON)
 
-        val request = Request.Builder()
+        val requestBuilder = Request.Builder()
             .url(url)
             .post(body)
             .addHeader("Authorization", "Bearer $apiKey")
-            .build()
+
+        if (packageName != null) {
+            requestBuilder.addHeader("X-Android-Package", packageName)
+        }
+
+        val request = requestBuilder.build()
 
         client.newCall(request).execute().use { response ->
             val responseBody = response.body?.string() ?: "{}"
